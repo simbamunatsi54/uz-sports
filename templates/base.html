@@ -1,0 +1,270 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}UZ Sports | University of Zimbabwe{% endblock %}</title>
+
+    <meta name="description"
+          content="University of Zimbabwe Sports — teams, fixtures, results, standings, news and sporting activities.">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<div class="site-shell">
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <!-- BRAND -->
+
+        <div class="sidebar-brand">
+
+            <a href="{% url 'home' %}" class="brand-link">
+
+                <div class="brand-crest">
+                    UZ
+                </div>
+
+                <div class="brand-text">
+                    <span>UNIVERSITY OF ZIMBABWE</span>
+                    <strong>SPORTS</strong>
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <!-- PRIMARY NAVIGATION -->
+
+        <nav class="sidebar-navigation" aria-label="Primary navigation">
+
+            <a href="{% url 'home' %}"
+               class="sidebar-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+
+                <span class="nav-pointer"></span>
+
+                <span class="nav-icon">⌂</span>
+
+                <span class="nav-text">Home</span>
+
+            </a>
+
+
+            <a href="{% url 'teams' %}"
+               class="sidebar-link {% if request.resolver_match.url_name == 'teams' or request.resolver_match.url_name == 'team_detail' %}active{% endif %}">
+
+                <span class="nav-pointer"></span>
+
+                <span class="nav-icon">◈</span>
+
+                <span class="nav-text">Teams</span>
+
+            </a>
+
+
+            <a href="{% url 'fixtures_results' %}"
+               class="sidebar-link {% if request.resolver_match.url_name == 'fixtures_results' %}active{% endif %}">
+
+                <span class="nav-pointer"></span>
+
+                <span class="nav-icon">▣</span>
+
+                <span class="nav-text">Fixtures & Results</span>
+
+            </a>
+
+
+            <a href="{% url 'standings' %}"
+               class="sidebar-link {% if request.resolver_match.url_name == 'standings' %}active{% endif %}">
+
+                <span class="nav-pointer"></span>
+
+                <span class="nav-icon">♜</span>
+
+                <span class="nav-text">Standings</span>
+
+            </a>
+
+
+            <a href="{% url 'news' %}"
+               class="sidebar-link {% if request.resolver_match.url_name == 'news' or request.resolver_match.url_name == 'news_detail' %}active{% endif %}">
+
+                <span class="nav-pointer"></span>
+
+                <span class="nav-icon">▤</span>
+
+                <span class="nav-text">News</span>
+
+            </a>
+
+
+            <a href="{% url 'gallery' %}"
+               class="sidebar-link {% if request.resolver_match.url_name == 'gallery' %}active{% endif %}">
+
+                <span class="nav-pointer"></span>
+
+                <span class="nav-icon">▧</span>
+
+                <span class="nav-text">Gallery</span>
+
+            </a>
+
+        </nav>
+
+
+        <!-- SIDEBAR FOOTER -->
+
+        <div class="sidebar-footer">
+
+            <div class="sidebar-footer-line"></div>
+
+            <span>KNOWLEDGE</span>
+            <strong>THROUGH SPORT</strong>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN APPLICATION AREA
+    ====================================================== -->
+
+    <div class="page-area">
+
+
+        <!-- =================================================
+             TOP UTILITY BAR
+        ================================================== -->
+
+        <header class="utility-header">
+
+            <div class="utility-left">
+
+                <span class="utility-status"></span>
+
+                <span>UNIVERSITY OF ZIMBABWE</span>
+
+            </div>
+
+
+            <div class="utility-right">
+
+                <span class="utility-sport-label">
+                    UZ SPORTS
+                </span>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             MOBILE HEADER
+        ================================================== -->
+
+        <header class="mobile-header">
+
+            <a href="{% url 'home' %}" class="mobile-brand">
+
+                <span class="mobile-brand-mark">
+                    UZ
+                </span>
+
+                <span>
+                    UZ SPORTS
+                </span>
+
+            </a>
+
+
+            <button
+                type="button"
+                class="mobile-menu-button"
+                id="mobileMenu"
+                aria-label="Open navigation">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+        </header>
+
+
+        <!-- =================================================
+             PAGE CONTENT
+        ================================================== -->
+
+        <main class="main-content">
+
+            {% block content %}
+            {% endblock %}
+
+        </main>
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer class="site-footer">
+
+            <div class="footer-inner">
+
+                <div class="footer-brand">
+
+                    <span class="footer-mark">UZ</span>
+
+                    <div>
+
+                        <strong>UNIVERSITY OF ZIMBABWE</strong>
+
+                        <span>SPORTS</span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="footer-copy">
+
+                    <p>
+                        University sport. Excellence. Community.
+                    </p>
+
+                    <span>
+                        © {% now "Y" %} University of Zimbabwe Sports.
+                        All rights reserved.
+                    </span>
+
+                </div>
+
+
+                <a href="{% url 'home' %}" class="footer-top">
+                    BACK TO TOP ↑
+                </a>
+
+            </div>
+
+        </footer>
+
+    </div>
+
+</div>
+
+
+<script src="{% static 'js/main.js' %}"></script>
+
+</body>
+</html>

@@ -1,0 +1,360 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Teams | UZ Sports{% endblock %}
+
+{% block content %}
+
+<section class="teams-page">
+
+    <!-- =====================================================
+         TEAMS HERO
+    ====================================================== -->
+
+    <header class="teams-hero">
+
+        <div class="teams-hero-image">
+
+            <img
+                src="{% static 'images/sports-hero.png' %}"
+                alt="University of Zimbabwe Sports Teams">
+
+        </div>
+
+        <div class="teams-hero-overlay"></div>
+
+        <div class="teams-hero-content">
+
+            <span class="teams-eyebrow">
+                OUR TEAMS
+            </span>
+
+            <h1>
+                UNIVERSITY OF ZIMBABWE
+                <strong>SPORTS TEAMS</strong>
+            </h1>
+
+            <p>
+                Discover our teams, meet our athletes and support
+                the University of Zimbabwe as we compete across
+                multiple sporting disciplines.
+            </p>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         TEAM CONTENT
+    ====================================================== -->
+
+    <div class="teams-content">
+
+        <!-- =================================================
+             PAGE INTRO
+        ================================================== -->
+
+        <div class="teams-page-heading">
+
+            <div>
+
+                <span class="teams-section-label">
+                    UNIVERSITY SPORT
+                </span>
+
+                <h2>
+                    OUR TEAMS
+                </h2>
+
+            </div>
+
+            <p>
+                Explore the sporting teams representing the
+                University of Zimbabwe.
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             SPORT FILTERS
+        ================================================== -->
+
+        <div class="teams-filter-bar">
+
+            <a href="{% url 'teams' %}"
+               class="team-filter{% if not selected_sport %}active{% endif %}">
+
+                <span class="filter-icon">▦</span>
+
+                <span>ALL SPORTS</span>
+
+            </a>
+
+
+            {% for sport in sports %}
+
+                <a href="{% url 'teams' %}?sport={{ sport.id }}"
+                   class="team-filter{% if selected_sport|stringformat:'s' == sport.id|stringformat:'s' %}active{% endif %}">
+
+                    <span class="filter-icon">
+
+                        {% if sport.name|lower == "football" %}
+                            ⚽
+                        {% elif sport.name|lower == "rugby" %}
+                            🏉
+                        {% elif sport.name|lower == "cricket" %}
+                            ◉
+                        {% elif sport.name|lower == "tennis" %}
+                            ◉
+                        {% elif sport.name|lower == "chess" %}
+                            ♟
+                        {% elif sport.name|lower == "athletics" %}
+                            ◆
+                        {% elif sport.name|lower == "volleyball" %}
+                            ◉
+                        {% elif sport.name|lower == "basketball" %}
+                            ◉
+                        {% else %}
+                            +
+                        {% endif %}
+
+                    </span>
+
+                    <span>
+                        {{ sport.name|upper }}
+                    </span>
+
+                </a>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- =================================================
+             TEAM GRID
+        ================================================== -->
+
+        <div class="teams-grid">
+
+            {% for team in teams %}
+
+                <article class="team-card">
+
+                    <!-- IMAGE -->
+
+                    <div class="team-card-image">
+
+                        {% if team.logo %}
+
+                            <img
+                                src="{{ team.logo.url }}"
+                                alt="{{ team.name }}">
+
+                        {% else %}
+
+                            <img
+                                src="{% static 'images/sports-hero.png' %}"
+                                alt="{{ team.name }}">
+
+                            <div class="team-card-image-overlay"></div>
+
+                        {% endif %}
+
+
+                        <!-- SPORT LABEL -->
+
+                        <span class="team-sport-label">
+                            {{ team.sport.name|upper }}
+                        </span>
+
+
+                        <!-- UZ MARK -->
+
+                        <span class="team-card-mark">
+                            UZ
+                        </span>
+
+                    </div>
+
+
+                    <!-- CARD BODY -->
+
+                    <div class="team-card-body">
+
+                        <div class="team-card-heading">
+
+                            <span class="team-card-category">
+                                UNIVERSITY TEAM
+                            </span>
+
+                            <h3>
+                                {{ team.name }}
+                            </h3>
+
+                        </div>
+
+
+                        {% if team.description %}
+
+                            <p class="team-card-description">
+                                {{ team.description|truncatewords:20 }}
+                            </p>
+
+                        {% else %}
+
+                            <p class="team-card-description">
+                                Representing the University of Zimbabwe
+                                with discipline, teamwork and excellence.
+                            </p>
+
+                        {% endif %}
+
+
+                        <div class="team-card-footer">
+
+                            <div class="team-card-meta">
+
+                                <span class="team-meta-icon">
+                                    ◉
+                                </span>
+
+                                <span>
+                                    UZ SPORTS
+                                </span>
+
+                            </div>
+
+
+                            <a
+                                href="{% url 'team_detail' team.id %}"
+                                class="team-view-button">
+
+                                VIEW TEAM
+
+                                <span>→</span>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            {% empty %}
+
+                <div class="teams-empty">
+
+                    <div class="teams-empty-mark">
+                        UZ
+                    </div>
+
+                    <h3>
+                        No teams available
+                    </h3>
+
+                    <p>
+                        Teams will appear here when they are
+                        added through the administration system.
+                    </p>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- =================================================
+             REPRESENTING EXCELLENCE
+        ================================================== -->
+
+        <section class="teams-excellence">
+
+            <div class="teams-excellence-mark">
+                UZ
+            </div>
+
+
+            <div class="teams-excellence-copy">
+
+                <span>
+                    REPRESENTING EXCELLENCE
+                </span>
+
+                <h2>
+                    Knowledge Through Sport
+                </h2>
+
+                <p>
+                    Our sports teams embody the values of the
+                    University of Zimbabwe — academic excellence,
+                    discipline, teamwork and national pride.
+                </p>
+
+            </div>
+
+
+            <div class="teams-excellence-stats">
+
+                <div>
+
+                    <strong>
+                        {{ sports|length }}
+                    </strong>
+
+                    <span>
+                        SPORTS
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        {{ teams|length }}
+                    </strong>
+
+                    <span>
+                        TEAMS
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        UZ
+                    </strong>
+
+                    <span>
+                        SPORTS
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <a href="{% url 'fixtures_results' %}"
+               class="teams-excellence-button">
+
+                MATCH CENTRE
+
+                <span>→</span>
+
+            </a>
+
+        </section>
+
+    </div>
+
+</section>
+
+{% endblock %}

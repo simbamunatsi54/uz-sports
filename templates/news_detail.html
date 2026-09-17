@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}{{ article.title }} | UZ Sports{% endblock %}
+
+{% block content %}
+
+<section class="news-detail-page">
+
+    <!-- =====================================================
+         ARTICLE HEADER
+    ====================================================== -->
+
+    <header class="news-detail-hero">
+
+        <div class="news-detail-hero-inner">
+
+            <div class="news-detail-heading">
+
+                <span class="news-detail-eyebrow">
+                    UZ SPORTS NEWS
+                </span>
+
+                <h1>
+                    {{ article.title }}
+                </h1>
+
+                <div class="news-detail-meta">
+
+                    {% if article.author %}
+                        <span>
+                            BY {{ article.author|upper }}
+                        </span>
+                    {% endif %}
+
+                    <span>
+                        {{ article.published_at|date:"d F Y" }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         ARTICLE
+    ====================================================== -->
+
+    <main class="news-detail-content">
+
+        <div class="news-detail-layout">
+
+
+            <!-- =============================================
+                 MAIN ARTICLE
+            ============================================== -->
+
+            <article class="news-article">
+
+                {% if article.image %}
+
+                    <figure class="news-detail-image">
+
+                        <img
+                            src="{{ article.image.url }}"
+                            alt="{{ article.title }}"
+                        >
+
+                    </figure>
+
+                {% else %}
+
+                    <figure class="news-detail-image">
+
+                        <img
+                            src="{% static 'images/sports-hero.png' %}"
+                            alt="UZ Sports"
+                        >
+
+                    </figure>
+
+                {% endif %}
+
+
+                <div class="news-article-body">
+
+                    {{ article.content|linebreaks }}
+
+                </div>
+
+
+                <!-- Article footer -->
+
+                <div class="news-article-footer">
+
+                    <span class="news-article-footer-label">
+                        UNIVERSITY OF ZIMBABWE SPORTS
+                    </span>
+
+                    <div class="news-share-line"></div>
+
+                    <span class="news-article-footer-date">
+                        {{ article.published_at|date:"d M Y" }}
+                    </span>
+
+                </div>
+
+            </article>
+
+
+            <!-- =============================================
+                 ARTICLE SIDEBAR
+            ============================================== -->
+
+            <aside class="news-detail-sidebar">
+
+                <div class="news-sidebar-block">
+
+                    <span class="news-sidebar-label">
+                        UZ SPORTS
+                    </span>
+
+                    <h2>
+                        Knowledge
+                        <strong>Through Sport</strong>
+                    </h2>
+
+                    <p>
+                        Follow the University of Zimbabwe as
+                        our athletes compete, develop and
+                        represent the institution.
+                    </p>
+
+                </div>
+
+
+                <div class="news-sidebar-rule"></div>
+
+
+                <div class="news-sidebar-block">
+
+                    <span class="news-sidebar-label">
+                        EXPLORE
+                    </span>
+
+                    <a
+                        href="{% url 'news' %}"
+                        class="news-sidebar-link"
+                    >
+                        <span>ALL SPORTS NEWS</span>
+                        <strong>→</strong>
+                    </a>
+
+                    <a
+                        href="{% url 'teams' %}"
+                        class="news-sidebar-link"
+                    >
+                        <span>OUR TEAMS</span>
+                        <strong>→</strong>
+                    </a>
+
+                    <a
+                        href="{% url 'fixtures_results' %}"
+                        class="news-sidebar-link"
+                    >
+                        <span>FIXTURES & RESULTS</span>
+                        <strong>→</strong>
+                    </a>
+
+                    <a
+                        href="{% url 'standings' %}"
+                        class="news-sidebar-link"
+                    >
+                        <span>STANDINGS</span>
+                        <strong>→</strong>
+                    </a>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+
+        <!-- =================================================
+             BACK TO NEWS
+        ================================================== -->
+
+        <div class="news-detail-navigation">
+
+            <a
+                href="{% url 'news' %}"
+                class="news-back-button"
+            >
+                <span>←</span>
+                BACK TO SPORTS NEWS
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             REPRESENTING EXCELLENCE
+        ================================================== -->
+
+        <section class="news-detail-excellence">
+
+            <div class="news-detail-excellence-mark">
+                UZ
+            </div>
+
+            <div>
+
+                <span>
+                    UNIVERSITY OF ZIMBABWE
+                </span>
+
+                <h2>
+                    Representing Excellence
+                </h2>
+
+                <p>
+                    Academic excellence, discipline,
+                    teamwork and national pride through sport.
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'teams' %}"
+                class="news-detail-excellence-button"
+            >
+                EXPLORE OUR TEAMS
+                <span>→</span>
+            </a>
+
+        </section>
+
+    </main>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,450 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ team.name }} | UZ Sports{% endblock %}
+
+{% block content %}
+
+<main class="team-detail-page">
+
+    <!-- =====================================================
+         TEAM HERO
+         ===================================================== -->
+
+    <section class="team-detail-hero-clean">
+
+    <div class="team-detail-hero-inner">
+
+        <a href="{% url 'teams' %}" class="team-detail-back-link">
+            ← BACK TO TEAMS
+        </a>
+
+        <div class="team-detail-hero-main">
+
+            <div class="team-detail-crest">
+                {% if team.logo %}
+                    <img
+                        src="{{ team.logo.url }}"
+                        alt="{{ team.name }} logo"
+                    >
+                {% else %}
+                    <span>{{ team.name|first|upper }}</span>
+                {% endif %}
+            </div>
+
+            <div class="team-detail-heading">
+
+                <span class="team-detail-eyebrow">
+                    UNIVERSITY OF ZIMBABWE
+                </span>
+
+                <div class="team-detail-sport">
+                    {{ team.sport.name|upper }}
+                </div>
+
+                <h1>
+                    {{ team.name }}
+                </h1>
+
+                {% if team.description %}
+                    <p>{{ team.description }}</p>
+                {% else %}
+                    <p>
+                        Representing the University of Zimbabwe
+                        with excellence, discipline, teamwork and pride.
+                    </p>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        <div class="team-detail-hero-mark">
+            <span>UZ</span>
+            <strong>SPORTS</strong>
+        </div>
+
+    </div>
+
+</section>
+
+    <!-- =====================================================
+         TEAM CONTENT
+         ===================================================== -->
+
+    <div class="team-detail-content">
+
+
+        <!-- =================================================
+             TEAM OVERVIEW
+             ================================================= -->
+
+        <section class="team-detail-overview">
+
+            <div class="team-overview-intro">
+
+                <span>
+                    {{ team.sport.name|upper }} PROGRAMME
+                </span>
+
+                <h2>
+                    Built to <strong>Compete.</strong>
+                </h2>
+
+                <p>
+                    The {{ team.name }} represents the University of
+                    Zimbabwe in {{ team.sport.name }}. Explore the
+                    athletes and coaching staff behind the team.
+                </p>
+
+            </div>
+
+
+            <div class="team-overview-stats">
+
+                <div class="team-overview-stat">
+
+                    <strong>
+                        {{ team.players.count }}
+                    </strong>
+
+                    <span>
+                        PLAYERS
+                    </span>
+
+                </div>
+
+
+                <div class="team-overview-stat">
+
+                    <strong>
+                        {{ team.coaches.count }}
+                    </strong>
+
+                    <span>
+                        COACHES
+                    </span>
+
+                </div>
+
+
+                <div class="team-overview-stat">
+
+                    <strong>
+                        {{ team.sport.name|first|upper }}
+                    </strong>
+
+                    <span>
+                        DISCIPLINE
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PLAYERS
+             ================================================= -->
+
+        <section class="team-detail-section">
+
+            <div class="team-detail-section-heading">
+
+                <div>
+
+                    <span>
+                        THE SQUAD
+                    </span>
+
+                    <h2>
+                        OUR <strong>PLAYERS.</strong>
+                    </h2>
+
+                </div>
+
+                <p>
+                    Meet the athletes representing UZ on the field,
+                    court and track.
+                </p>
+
+            </div>
+
+
+            {% if team.players.all %}
+
+                <div class="team-people-grid">
+
+                   {% for player in team.players.all %}
+
+    <a class="team-person-card">
+        <a
+            href="{% url 'player_detail' player.id %}"
+            class="team-person-card"
+        ></a>
+
+        <div class="team-person-image">
+
+            {% if player.photo %}
+
+                <img
+                    src="{{ player.photo.url }}"
+                    alt="{{ player.first_name }} {{ player.last_name }}"
+                >
+
+            {% else %}
+
+                <div class="team-person-fallback">
+                    {{ player.first_name|first|upper }}{{ player.last_name|first|upper }}
+                </div>
+
+            {% endif %}
+
+        </div>
+
+        <div class="team-person-shade"></div>
+
+        <div class="team-person-number">
+
+            {% if player.jersey_number %}
+                #{{ player.jersey_number }}
+            {% else %}
+                UZ
+            {% endif %}
+
+        </div>
+
+        <div class="team-person-info">
+
+            <span>
+                {% if player.position %}
+                    {{ player.position|upper }}
+                {% else %}
+                    PLAYER
+                {% endif %}
+            </span>
+
+            <h3>
+                {{ player.first_name }}
+                {{ player.last_name }}
+            </h3>
+
+        </div>
+
+    </a>
+
+{% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="team-detail-empty">
+
+                    <div class="team-detail-empty-number">
+                        00
+                    </div>
+
+                    <div>
+
+                        <span>
+                            SQUAD INFORMATION
+                        </span>
+
+                        <h3>
+                            No players registered yet
+                        </h3>
+
+                        <p>
+                            Player information will appear here once
+                            athletes are added through the administration
+                            system.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- =================================================
+             COACHING STAFF
+             ================================================= -->
+
+        <section class="team-detail-section">
+
+            <div class="team-detail-section-heading">
+
+                <div>
+
+                    <span>
+                        TEAM MANAGEMENT
+                    </span>
+
+                    <h2>
+                        COACHING <strong>STAFF.</strong>
+                    </h2>
+
+                </div>
+
+                <p>
+                    The coaches and staff guiding the team towards
+                    sporting excellence.
+                </p>
+
+            </div>
+
+
+            {% if team.coaches.all %}
+
+                <div class="team-people-grid coaches-grid">
+
+                    {% for coach in team.coaches.all %}
+
+                        <article class="team-person-card">
+
+                            <div class="team-person-image">
+
+                                {% if coach.photo %}
+
+                                    <img
+                                        src="{{ coach.photo.url }}"
+                                        alt="{{ coach.first_name }} {{ coach.last_name }}"
+                                    >
+
+                                {% else %}
+
+                                    <div class="team-person-fallback">
+                                        {{ coach.first_name|first|upper }}{{ coach.last_name|first|upper }}
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="team-person-shade"></div>
+
+
+                            <div class="team-person-number coach-badge">
+                                STAFF
+                            </div>
+
+
+                            <div class="team-person-info">
+
+                                <span>
+                                    {{ coach.role|upper }}
+                                </span>
+
+                                <h3>
+                                    {{ coach.first_name }}
+                                    {{ coach.last_name }}
+                                </h3>
+
+                            </div>
+
+                        </article>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="team-detail-empty">
+
+                    <div class="team-detail-empty-number">
+                        00
+                    </div>
+
+                    <div>
+
+                        <span>
+                            COACHING STAFF
+                        </span>
+
+                        <h3>
+                            No coaching staff registered yet
+                        </h3>
+
+                        <p>
+                            Coaching staff information will appear here
+                            once it is added through the administration
+                            system.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- =================================================
+             TEAM STATEMENT
+             ================================================= -->
+
+        <section class="team-detail-statement">
+
+            <div class="team-statement-mark">
+                UZ
+            </div>
+
+            <div class="team-statement-copy">
+
+                <span>
+                    UNIVERSITY OF ZIMBABWE SPORTS
+                </span>
+
+                <h2>
+                    Knowledge Through Sport.
+                </h2>
+
+                <p>
+                    Sport at the University of Zimbabwe develops
+                    discipline, leadership, teamwork and a culture
+                    of excellence.
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'fixtures_results' %}"
+                class="team-statement-button"
+            >
+                VIEW MATCH CENTRE
+                <span>→</span>
+            </a>
+
+        </section>
+
+
+        <!-- =================================================
+             BACK TO TEAMS
+             ================================================= -->
+
+        <div class="team-detail-bottom">
+
+            <a
+                href="{% url 'teams' %}"
+                class="team-detail-bottom-link"
+            >
+                <span>←</span>
+                ALL UZ TEAMS
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+{% endblock %}

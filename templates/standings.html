@@ -1,0 +1,331 @@
+{% extends "base.html" %}
+
+{% block title %}Standings | UZ Sports{% endblock %}
+
+{% block content %}
+
+<section class="standings-page">
+
+    <!-- =====================================================
+         STANDINGS HERO
+    ====================================================== -->
+
+    <header class="standings-hero">
+
+        <div class="standings-hero-content">
+
+            <span class="standings-eyebrow">
+                UZ SPORTS COMPETITION
+            </span>
+
+            <h1>
+                LEAGUE
+                <strong>STANDINGS.</strong>
+            </h1>
+
+            <p>
+                Follow team performance and competition
+                positions across University of Zimbabwe sport.
+            </p>
+
+        </div>
+
+        <div class="standings-hero-mark">
+            TABLE
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <div class="standings-content">
+
+        <!-- =================================================
+             PAGE INTRO
+        ================================================== -->
+
+        <div class="standings-heading">
+
+            <div>
+
+                <span>
+                    COMPETITION TABLE
+                </span>
+
+                <h2>
+                    CURRENT STANDINGS
+                </h2>
+
+            </div>
+
+            <p>
+                Competition positions are determined from
+                the standings data maintained by UZ Sports.
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             SPORT FILTER
+        ================================================== -->
+
+        <div class="standings-filter">
+
+            <span class="standings-filter-label">
+                SPORT
+            </span>
+
+            <a
+    href="{% url 'standings' %}"
+    class="standings-filter-button {% if not selected_sport %}active{% endif %}"
+>
+    SELECT SPORT
+</a>
+
+            {% for sport in sports %}
+
+               <a
+    href="?sport={{ sport.id }}"
+    class="standings-filter-button {% if selected_sport == sport.id|stringformat:'s' %}active{% endif %}"
+>
+    {{ sport.name|upper }}
+</a>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- =================================================
+             STANDINGS TABLE
+        ================================================== -->
+
+        {% if league_table %}
+
+            <section class="standings-table-wrapper">
+
+                <div class="standings-table-header">
+
+                    <div>
+
+                        <span>
+                            UZ SPORTS
+                        </span>
+
+                        <h3>
+                            LEAGUE TABLE
+                        </h3>
+
+                    </div>
+
+                    <div class="standings-table-status">
+                        OFFICIAL TABLE
+                    </div>
+
+                </div>
+
+
+                <div class="standings-table-scroll">
+
+                    <table class="standings-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th class="position-column">
+                                    #
+                                </th>
+
+                                <th class="team-column">
+                                    TEAM
+                                </th>
+
+                                <th>P</th>
+<th>W</th>
+<th>D</th>
+<th>L</th>
+<th>GF</th>
+<th>GA</th>
+<th>GD</th>
+<th class="points-column">PTS</th>
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for row in league_table %}
+
+                                <tr>
+
+                                    <td class="team-position">
+
+                                        {% if forloop.counter < 10 %}
+                                            0{{ forloop.counter }}
+                                        {% else %}
+                                            {{ forloop.counter }}
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <td class="team-name">
+
+                                        <div class="standings-team">
+
+                                            {% if row.team.logo %}
+
+                                                <img
+                                                    src="{{ row.team.logo.url }}"
+                                                    alt="{{ row.team.name }}"
+                                                >
+
+                                            {% else %}
+
+                                                <span class="team-logo-fallback">
+                                                    {{ row.team.name|first|upper }}
+                                                </span>
+
+                                            {% endif %}
+
+                                            <div>
+
+                                                <strong>
+                                                    {{ row.team.name }}
+                                                </strong>
+
+                                                <small>
+                                                    {{ row.sport.name }}
+                                                </small>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+<td>{{ row.played }}</td>
+<td>{{ row.won }}</td>
+<td>{{ row.drawn }}</td>
+<td>{{ row.lost }}</td>
+<td>{{ row.goals_for }}</td>
+<td>{{ row.goals_against }}</td>
+<td>{{ row.goal_difference }}</td>
+<td class="team-points">{{ row.points }}</td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div class="standings-table-footer">
+
+                   <span>P = PLAYED</span>
+<span>W = WON</span>
+<span>D = DRAWN</span>
+<span>L = LOST</span>
+<span>GF = GOALS FOR</span>
+<span>GA = GOALS AGAINST</span>
+<span>GD = GOAL DIFFERENCE</span>
+<strong>PTS = POINTS</strong>
+                </div>
+
+            </section>
+
+
+        {% else %}
+
+            <!-- =================================================
+                 EMPTY STATE
+            ================================================== -->
+
+            <section class="standings-empty">
+
+                <div class="standings-empty-number">
+                    00
+                </div>
+
+                <div class="standings-empty-content">
+
+                    <span>
+                        COMPETITION DATA
+                    </span>
+
+                    <h2>
+                        Standings are not available yet
+                    </h2>
+
+                    <p>
+                        League table information will appear here
+                        once official competition results have been
+                        entered through the UZ Sports administration
+                        system.
+                    </p>
+
+                    <div class="standings-empty-line"></div>
+
+                    <small>
+                        NO COMPETITION RECORDS CURRENTLY AVAILABLE
+                    </small>
+
+                </div>
+
+            </section>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             EXCELLENCE PANEL
+        ================================================== -->
+
+        <section class="standings-excellence">
+
+            <div class="standings-excellence-mark">
+                UZ
+            </div>
+
+            <div class="standings-excellence-copy">
+
+                <span>
+                    UNIVERSITY OF ZIMBABWE
+                </span>
+
+                <h2>
+                    Competition. Discipline. Excellence.
+                </h2>
+
+                <p>
+                    Follow the performance of University of Zimbabwe
+                    teams throughout the sporting season.
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'fixtures_results' %}"
+                class="standings-excellence-button"
+            >
+                MATCH CENTRE
+                <span>→</span>
+            </a>
+
+        </section>
+
+    </div>
+
+</section>
+
+{% endblock %}

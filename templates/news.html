@@ -1,0 +1,333 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Sports News | UZ Sports{% endblock %}
+
+{% block content %}
+
+<section class="news-page">
+
+    <!-- =====================================================
+         NEWS HERO
+    ====================================================== -->
+
+    <header class="news-hero">
+
+        <div class="news-hero-content">
+
+            <span class="news-eyebrow">
+                UZ SPORTS NEWS
+            </span>
+
+            <h1>
+                STORIES FROM
+                <strong>THE HEART OF SPORT.</strong>
+            </h1>
+
+            <p>
+                Latest news, updates and sporting achievements
+                from the University of Zimbabwe.
+            </p>
+
+        </div>
+
+        <div class="news-hero-mark">
+            NEWS
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <div class="news-content">
+
+
+        {% if news_list %}
+
+            <!-- =================================================
+                 FEATURED STORY
+            ================================================== -->
+
+            {% with featured=news_list.0 %}
+
+                <section class="featured-news">
+
+                    <div class="featured-news-image">
+
+                        {% if featured.image %}
+
+                            <img
+                                src="{{ featured.image.url }}"
+                                alt="{{ featured.title }}"
+                            >
+
+                        {% else %}
+
+                            <img
+                                src="{% static 'images/sports-hero.png' %}"
+                                alt="UZ Sports"
+                            >
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="featured-news-content">
+
+                        <span class="news-category">
+                            FEATURED STORY
+                        </span>
+
+                        <h2>
+                            {{ featured.title }}
+                        </h2>
+
+                        <p>
+                            {{ featured.content|truncatewords:45 }}
+                        </p>
+
+                        <div class="featured-news-meta">
+
+                            {% if featured.author %}
+
+                                <span>
+                                    BY {{ featured.author|upper }}
+                                </span>
+
+                            {% endif %}
+
+                            <span>
+                                {{ featured.published_at|date:"d M Y" }}
+                            </span>
+
+                        </div>
+
+                        <a
+                            href="{% url 'news_detail' featured.id %}"
+                            class="news-read-button"
+                        >
+                            READ FULL STORY
+                            <span>→</span>
+                        </a>
+
+                    </div>
+
+                </section>
+
+            {% endwith %}
+
+
+            <!-- =================================================
+                 NEWS SECTION HEADER
+            ================================================== -->
+
+            <div class="news-section-heading">
+
+                <div>
+
+                    <span>
+                        LATEST UPDATES
+                    </span>
+
+                    <h2>
+                        FROM THE SPORTS DESK
+                    </h2>
+
+                </div>
+
+                <p>
+                    Follow the latest developments across
+                    University of Zimbabwe sport.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 NEWS GRID
+            ================================================== -->
+
+            <section class="news-grid">
+
+                {% for item in news_list %}
+
+                    {% if not forloop.first %}
+
+                        <article class="news-card">
+
+                            <a
+                                href="{% url 'news_detail' item.id %}"
+                                class="news-card-image"
+                            >
+
+                                {% if item.image %}
+
+                                    <img
+                                        src="{{ item.image.url }}"
+                                        alt="{{ item.title }}"
+                                    >
+
+                                {% else %}
+
+                                    <img
+                                        src="{% static 'images/sports-hero.png' %}"
+                                        alt="UZ Sports"
+                                    >
+
+                                {% endif %}
+
+                                <span class="news-image-label">
+                                    UZ SPORTS
+                                </span>
+
+                            </a>
+
+
+                            <div class="news-card-content">
+
+                                <div class="news-card-meta">
+
+                                    <span>
+                                        SPORTS NEWS
+                                    </span>
+
+                                    <time>
+                                        {{ item.published_at|date:"d M Y" }}
+                                    </time>
+
+                                </div>
+
+
+                                <h3>
+                                    <a href="{% url 'news_detail' item.id %}">
+                                        {{ item.title }}
+                                    </a>
+                                </h3>
+
+
+                                <p>
+                                    {{ item.content|truncatewords:24 }}
+                                </p>
+
+
+                                <div class="news-card-footer">
+
+                                    {% if item.author %}
+
+                                        <span>
+                                            {{ item.author }}
+                                        </span>
+
+                                    {% else %}
+
+                                        <span>
+                                            UZ SPORTS
+                                        </span>
+
+                                    {% endif %}
+
+
+                                    <a
+                                        href="{% url 'news_detail' item.id %}"
+                                        aria-label="Read {{ item.title }}"
+                                    >
+                                        READ
+                                        <span>→</span>
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </section>
+
+
+        {% else %}
+
+            <!-- =================================================
+                 EMPTY STATE
+            ================================================== -->
+
+            <section class="news-empty">
+
+                <div class="news-empty-mark">
+                    NEWS
+                </div>
+
+                <div>
+
+                    <span>
+                        UZ SPORTS
+                    </span>
+
+                    <h2>
+                        No news stories yet
+                    </h2>
+
+                    <p>
+                        Sports news will appear here when articles
+                        are added through the administration system.
+                    </p>
+
+                </div>
+
+            </section>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             REPRESENTING EXCELLENCE
+        ================================================== -->
+
+        <section class="news-excellence">
+
+            <div class="news-excellence-mark">
+                UZ
+            </div>
+
+
+            <div class="news-excellence-copy">
+
+                <span>
+                    UNIVERSITY OF ZIMBABWE
+                </span>
+
+                <h2>
+                    Knowledge Through Sport
+                </h2>
+
+                <p>
+                    Excellence in academics, sport, discipline,
+                    teamwork and university life.
+                </p>
+
+            </div>
+
+
+            <a
+                href="{% url 'teams' %}"
+                class="news-excellence-button"
+            >
+                EXPLORE OUR TEAMS
+                <span>→</span>
+            </a>
+
+        </section>
+
+    </div>
+
+</section>
+
+{% endblock %}

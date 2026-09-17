@@ -1,0 +1,824 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home | UZ Sports{% endblock %}
+
+{% block content %}
+
+<div class="uz-home">
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <section class="uz-home-hero">
+
+        <div class="uz-home-hero-overlay"></div>
+
+        <div class="uz-home-hero-content">
+
+            <span class="uz-home-eyebrow">
+                UNIVERSITY OF ZIMBABWE
+            </span>
+
+            <h1>
+                SPORTS
+                <strong>EXCELLENCE</strong>
+                BUILDS TOMORROW
+            </h1>
+
+            <p>
+                Developing champions on and off the court, field and track.
+                UZ Sports stands for excellence, discipline, teamwork and
+                national pride.
+            </p>
+
+            <div class="uz-home-hero-actions">
+
+                <a href="{% url 'teams' %}" class="uz-home-primary-button">
+                    EXPLORE OUR TEAMS
+                    <span>→</span>
+                </a>
+
+                <a href="{% url 'fixtures_results' %}" class="uz-home-secondary-button">
+                    MATCH CENTRE
+                    <span>→</span>
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="uz-home-hero-number">
+            01
+        </div>
+
+        <div class="uz-home-hero-slogan">
+            <span>ONE TEAM</span>
+            <strong>ONE DREAM</strong>
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SPORTS NAVIGATION
+         ===================================================== -->
+
+    <section class="uz-home-sports-nav">
+
+        <div class="uz-home-sports-inner">
+
+            <a href="{% url 'fixtures_results' %}"
+               class="uz-sport-filter active">
+
+                <span class="uz-sport-filter-icon">▦</span>
+                <span>ALL SPORTS</span>
+
+            </a>
+
+            {% for sport in sports %}
+
+                <a href="{% url 'fixtures_results' %}?sport={{ sport.id }}"
+                   class="uz-sport-filter">
+
+                    <span class="uz-sport-filter-icon">
+                        {% if sport.name|lower == "football" %}
+                            ⚽
+                        {% elif sport.name|lower == "basketball" %}
+                            ◉
+                        {% elif sport.name|lower == "tennis" %}
+                            ◯
+                        {% elif sport.name|lower == "volleyball" %}
+                            ◉
+                        {% elif sport.name|lower == "athletics" %}
+                            ↗
+                        {% elif sport.name|lower == "cricket" %}
+                            ●
+                        {% elif sport.name|lower == "rugby" %}
+                            ◆
+                        {% elif sport.name|lower == "chess" %}
+                            ♟
+                        {% else %}
+                            +
+                        {% endif %}
+                    </span>
+
+                    <span>{{ sport.name }}</span>
+
+                </a>
+
+            {% endfor %}
+
+            <div class="uz-home-search">
+
+                <span>⌕</span>
+
+                <input
+                    type="text"
+                    id="homeTeamSearch"
+                    placeholder="Search teams..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         FEATURED + LATEST NEWS
+         ===================================================== -->
+
+    <section class="uz-home-news-section">
+
+        <div class="uz-home-section-heading">
+
+            <div>
+                <span>SPORTS MEDIA</span>
+                <h2>LATEST STORIES</h2>
+            </div>
+
+            <a href="{% url 'news' %}">
+                VIEW ALL NEWS →
+            </a>
+
+        </div>
+
+
+        {% if latest_news %}
+
+            <div class="uz-home-news-layout">
+
+                <!-- FEATURED STORY -->
+
+                <div class="uz-home-featured-news">
+
+                    {% with featured=latest_news.0 %}
+
+                        <a href="{% url 'news_detail' featured.id %}"
+                           class="uz-home-featured-image">
+
+                            {% if featured.image %}
+
+                                <img
+                                    src="{{ featured.image.url }}"
+                                    alt="{{ featured.title }}"
+                                >
+
+                            {% else %}
+
+                                <img
+                                    src="{% static 'images/sports-hero.png' %}"
+                                    alt="UZ Sports"
+                                >
+
+                            {% endif %}
+
+                            <span class="uz-featured-label">
+                                FEATURED
+                            </span>
+
+                            <div class="uz-featured-overlay">
+
+                                <div class="uz-featured-meta">
+                                    <span>UZ SPORTS</span>
+
+                                    <span>
+                                        {{ featured.published_at|date:"d M Y" }}
+                                    </span>
+                                </div>
+
+                                <h3>
+                                    {{ featured.title }}
+                                </h3>
+
+                                <p>
+                                    {{ featured.content|truncatewords:32 }}
+                                </p>
+
+                                <span class="uz-featured-read">
+                                    READ MORE →
+                                </span>
+
+                            </div>
+
+                        </a>
+
+                    {% endwith %}
+
+                </div>
+
+
+                <!-- OTHER STORIES -->
+
+                <div class="uz-home-news-list">
+
+                    {% for article in latest_news|slice:"1:" %}
+
+                        <article class="uz-home-news-card">
+
+                            <a href="{% url 'news_detail' article.id %}"
+                               class="uz-home-news-image">
+
+                                {% if article.image %}
+
+                                    <img
+                                        src="{{ article.image.url }}"
+                                        alt="{{ article.title }}"
+                                    >
+
+                                {% else %}
+
+                                    <img
+                                        src="{% static 'images/sports-hero.png' %}"
+                                        alt="UZ Sports"
+                                    >
+
+                                {% endif %}
+
+                            </a>
+
+                            <div class="uz-home-news-card-body">
+
+                                <div class="uz-home-news-meta">
+
+                                    <span>SPORTS</span>
+
+                                    <time>
+                                        {{ article.published_at|date:"d M Y" }}
+                                    </time>
+
+                                </div>
+
+                                <h3>
+                                    <a href="{% url 'news_detail' article.id %}">
+                                        {{ article.title }}
+                                    </a>
+                                </h3>
+
+                                <p>
+                                    {{ article.content|truncatewords:20 }}
+                                </p>
+
+                                <a
+                                    href="{% url 'news_detail' article.id %}"
+                                    class="uz-home-read-link"
+                                >
+                                    READ MORE →
+                                </a>
+
+                            </div>
+
+                        </article>
+
+                    {% empty %}
+
+                        <div class="uz-home-empty">
+                            <span>UZ SPORTS NEWS</span>
+                            <h3>No additional stories yet</h3>
+                            <p>
+                                More sports stories will appear here when
+                                articles are added through the administration system.
+                            </p>
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        {% else %}
+
+            <div class="uz-home-empty-large">
+
+                <span>UZ SPORTS MEDIA</span>
+
+                <h3>
+                    Sports stories are coming soon.
+                </h3>
+
+                <p>
+                    News and updates will appear here when articles are
+                    added through the administration system.
+                </p>
+
+                <a href="{% url 'teams' %}">
+                    EXPLORE OUR TEAMS →
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- =====================================================
+         MATCH CENTRE
+         ===================================================== -->
+
+    <section class="uz-home-match-section">
+
+        <div class="uz-home-section-heading">
+
+            <div>
+                <span>MATCH CENTRE</span>
+                <h2>UPCOMING FIXTURES</h2>
+            </div>
+
+            <a href="{% url 'fixtures_results' %}">
+                ALL FIXTURES →
+            </a>
+
+        </div>
+
+
+        <div class="uz-home-match-grid">
+
+            {% for fixture in upcoming_fixtures %}
+
+                <article class="uz-match-card">
+
+                    <div class="uz-match-top">
+
+                        <span>
+                            {{ fixture.sport.name|upper }}
+                        </span>
+
+                        <strong>
+                            NEXT MATCH
+                        </strong>
+
+                    </div>
+
+
+                    <div class="uz-match-date">
+
+                        <span>
+                            {{ fixture.date|date:"d" }}
+                        </span>
+
+                        <div>
+                            <strong>
+                                {{ fixture.date|date:"M" }}
+                            </strong>
+
+                            <small>
+                                {{ fixture.date|date:"Y" }}
+                            </small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="uz-match-teams">
+
+                        <div class="uz-match-team">
+
+                            {% if fixture.home_team.logo %}
+
+                                <img
+                                    src="{{ fixture.home_team.logo.url }}"
+                                    alt="{{ fixture.home_team.name }}"
+                                >
+
+                            {% else %}
+
+                                <span class="uz-match-team-fallback">
+                                    {{ fixture.home_team.name|first|upper }}
+                                </span>
+
+                            {% endif %}
+
+                            <strong>
+                                {{ fixture.home_team.name }}
+                            </strong>
+
+                            <small>HOME</small>
+
+                        </div>
+
+
+                        <div class="uz-match-vs">
+                            <span>VS</span>
+                        </div>
+
+
+                        <div class="uz-match-team">
+
+                            {% if fixture.away_team.logo %}
+
+                                <img
+                                    src="{{ fixture.away_team.logo.url }}"
+                                    alt="{{ fixture.away_team.name }}"
+                                >
+
+                            {% else %}
+
+                                <span class="uz-match-team-fallback">
+                                    {{ fixture.away_team.name|first|upper }}
+                                </span>
+
+                            {% endif %}
+
+                            <strong>
+                                {{ fixture.away_team.name }}
+                            </strong>
+
+                            <small>AWAY</small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="uz-match-footer">
+
+                        <span>
+                            {{ fixture.time|time:"H:i" }}
+                        </span>
+
+                        {% if fixture.venue %}
+                            <span>
+                                {{ fixture.venue.name }}
+                            </span>
+                        {% endif %}
+
+                    </div>
+
+                </article>
+
+            {% empty %}
+
+                <div class="uz-home-empty-large">
+
+                    <span>MATCH CENTRE</span>
+
+                    <h3>
+                        No upcoming fixtures.
+                    </h3>
+
+                    <p>
+                        Upcoming matches will appear here once they are
+                        entered through the administration system.
+                    </p>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         RESULTS + STANDINGS
+         ===================================================== -->
+
+    <section class="uz-home-performance">
+
+        <!-- RESULTS -->
+
+        <div class="uz-home-results-panel">
+
+            <div class="uz-home-panel-heading">
+
+                <div>
+                    <span>RESULTS</span>
+                    <h2>LATEST RESULTS</h2>
+                </div>
+
+                <a href="{% url 'fixtures_results' %}">
+                    VIEW ALL →
+                </a>
+
+            </div>
+
+
+            <div class="uz-results-list">
+
+                {% for result in recent_results %}
+
+                    <article class="uz-result-row">
+
+                        <div class="uz-result-sport">
+                            {{ result.fixture.sport.name|upper }}
+                        </div>
+
+                        <div class="uz-result-team home">
+
+                            <strong>
+                                {{ result.fixture.home_team.name }}
+                            </strong>
+
+                            {% if result.fixture.home_team.logo %}
+
+                                <img
+                                    src="{{ result.fixture.home_team.logo.url }}"
+                                    alt=""
+                                >
+
+                            {% endif %}
+
+                        </div>
+
+                        <div class="uz-result-score">
+
+                            <strong>
+                                {{ result.home_score }}
+                            </strong>
+
+                            <span>–</span>
+
+                            <strong>
+                                {{ result.away_score }}
+                            </strong>
+
+                        </div>
+
+                        <div class="uz-result-team away">
+
+                            {% if result.fixture.away_team.logo %}
+
+                                <img
+                                    src="{{ result.fixture.away_team.logo.url }}"
+                                    alt=""
+                                >
+
+                            {% endif %}
+
+                            <strong>
+                                {{ result.fixture.away_team.name }}
+                            </strong>
+
+                        </div>
+
+                    </article>
+
+                {% empty %}
+
+                    <div class="uz-panel-empty">
+                        No results have been recorded yet.
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- STANDINGS -->
+
+        <div class="uz-home-table-panel">
+
+            <div class="uz-home-panel-heading">
+
+                <div>
+                    <span>COMPETITION</span>
+                    <h2>LEAGUE TABLE</h2>
+                </div>
+
+                <a href="{% url 'standings' %}">
+                    FULL TABLE →
+                </a>
+
+            </div>
+
+
+            {% if league_table %}
+
+                <div class="uz-mini-table">
+
+                    <div class="uz-mini-table-header">
+
+                        <span>#</span>
+                        <span>TEAM</span>
+                        <span>P</span>
+                        <span>PTS</span>
+
+                    </div>
+
+
+                    {% for row in league_table %}
+
+                        <div class="uz-mini-table-row">
+
+                            <span class="uz-mini-position">
+                                {% if forloop.counter < 10 %}
+                                    0{{ forloop.counter }}
+                                {% else %}
+                                    {{ forloop.counter }}
+                                {% endif %}
+                            </span>
+
+                            <span class="uz-mini-team">
+
+                                {% if row.team.logo %}
+
+                                    <img
+                                        src="{{ row.team.logo.url }}"
+                                        alt=""
+                                    >
+
+                                {% else %}
+
+                                    <span>
+                                        {{ row.team.name|first|upper }}
+                                    </span>
+
+                                {% endif %}
+
+                                <strong>
+                                    {{ row.team.name }}
+                                </strong>
+
+                            </span>
+
+                            <span>
+                                {{ row.played }}
+                            </span>
+
+                            <strong class="uz-mini-points">
+                                {{ row.points }}
+                            </strong>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="uz-table-empty">
+
+                    <div class="uz-table-empty-mark">
+                        00
+                    </div>
+
+                    <div>
+                        <span>COMPETITION DATA</span>
+
+                        <h3>
+                            Standings not available yet
+                        </h3>
+
+                        <p>
+                            Official league table information will appear
+                            here once competition data is entered.
+                        </p>
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         GALLERY STRIP
+         ===================================================== -->
+
+    <section class="uz-home-gallery-section">
+
+        <div class="uz-home-section-heading">
+
+            <div>
+                <span>SPORTS MEDIA</span>
+                <h2>FROM THE GALLERY</h2>
+            </div>
+
+            <a href="{% url 'gallery' %}">
+                VIEW GALLERY →
+            </a>
+
+        </div>
+
+
+        {% if gallery_items %}
+
+            <div class="uz-home-gallery-grid">
+
+                {% for item in gallery_items|slice:":5" %}
+
+                    <a
+                        href="{% url 'gallery' %}"
+                        class="uz-home-gallery-item"
+                    >
+
+                        <img
+                            src="{{ item.image.url }}"
+                            alt="{{ item.title }}"
+                        >
+
+                        <div class="uz-gallery-overlay">
+
+                            <span>
+                                {{ item.title }}
+                            </span>
+
+                            <strong>
+                                ↗
+                            </strong>
+
+                        </div>
+
+                    </a>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="uz-home-gallery-empty">
+
+                <span>UZ SPORTS MEDIA</span>
+
+                <h3>
+                    Gallery coming soon.
+                </h3>
+
+                <p>
+                    Training, competition and university sports moments
+                    will appear here when photographs are added.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- =====================================================
+         REPRESENTING EXCELLENCE
+         ===================================================== -->
+
+    <section class="uz-home-excellence">
+
+        <div class="uz-home-excellence-mark">
+            UZ
+        </div>
+
+        <div class="uz-home-excellence-copy">
+
+            <span>
+                UNIVERSITY OF ZIMBABWE
+            </span>
+
+            <h2>
+                REPRESENTING EXCELLENCE
+            </h2>
+
+            <p>
+                Our sports teams embody the values of the University of
+                Zimbabwe — academic excellence, discipline, teamwork
+                and national pride.
+            </p>
+
+        </div>
+
+
+        <div class="uz-home-excellence-stats">
+
+            <div>
+                <strong>{{ sports|length }}</strong>
+                <span>SPORTS<br>DISCIPLINES</span>
+            </div>
+
+            <div>
+                <strong>{{ teams|length }}</strong>
+                <span>UZ<br>TEAMS</span>
+            </div>
+
+            <div>
+                <strong>100+</strong>
+                <span>STUDENT<br>ATHLETES</span>
+            </div>
+
+        </div>
+
+
+        <a
+            href="{% url 'teams' %}"
+            class="uz-home-excellence-button"
+        >
+            EXPLORE OUR TEAMS
+            <span>→</span>
+        </a>
+
+    </section>
+
+</div>
+
+{% endblock %}

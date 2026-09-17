@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Gallery | UZ Sports{% endblock %}
+
+{% block content %}
+
+<section class="gallery-page">
+
+    <!-- =====================================================
+         GALLERY HERO
+    ====================================================== -->
+
+    <header class="gallery-hero">
+
+        <div class="gallery-hero-content">
+
+            <span class="gallery-eyebrow">
+                UZ SPORTS GALLERY
+            </span>
+
+            <h1>
+                MOMENTS THAT
+                <strong>DEFINE SPORT.</strong>
+            </h1>
+
+            <p>
+                Explore the people, performances and moments
+                that make University of Zimbabwe sport special.
+            </p>
+
+        </div>
+
+        <div class="gallery-hero-mark">
+            01
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         GALLERY CONTENT
+    ====================================================== -->
+
+    <div class="gallery-content">
+
+        {% if gallery_items %}
+
+            <!-- =============================================
+                 GALLERY INTRO
+            ============================================== -->
+
+            <div class="gallery-heading">
+
+                <div>
+
+                    <span>
+                        SPORTS MEDIA
+                    </span>
+
+                    <h2>
+                        THE LATEST MOMENTS
+                    </h2>
+
+                </div>
+
+                <p>
+                    Highlights from training, competition,
+                    university events and UZ sporting life.
+                </p>
+
+            </div>
+
+
+            <!-- =============================================
+                 GALLERY GRID
+            ============================================== -->
+
+            <div class="gallery-grid">
+
+                {% for item in gallery_items %}
+
+                    <article class="gallery-card
+                        {% if forloop.first %}gallery-card-featured{% endif %}">
+
+                        <a
+                            href="{{ item.image.url }}"
+                            class="gallery-image"
+                            target="_blank"
+                            rel="noopener"
+                        >
+
+                            <img
+                                src="{{ item.image.url }}"
+                                alt="{{ item.title }}"
+                            >
+
+                            <div class="gallery-overlay">
+
+                                <span class="gallery-view">
+                                    VIEW IMAGE
+                                    <strong>↗</strong>
+                                </span>
+
+                            </div>
+
+                            <span class="gallery-number">
+                                {% if forloop.counter < 10 %}
+                                    0{{ forloop.counter }}
+                                {% else %}
+                                    {{ forloop.counter }}
+                                {% endif %}
+                            </span>
+
+                        </a>
+
+
+                        <div class="gallery-card-content">
+
+                            <div class="gallery-card-meta">
+
+                                <span>
+                                    UZ SPORTS
+                                </span>
+
+                                <time>
+                                    {{ item.uploaded_at|date:"d M Y" }}
+                                </time>
+
+                            </div>
+
+                            <h3>
+                                {{ item.title }}
+                            </h3>
+
+                            {% if item.caption %}
+
+                                <p>
+                                    {{ item.caption }}
+                                </p>
+
+                            {% endif %}
+
+                        </div>
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
+
+
+        {% else %}
+
+            <!-- =============================================
+                 EMPTY STATE
+            ============================================== -->
+
+            <section class="gallery-empty">
+
+                <div class="gallery-empty-number">
+                    01
+                </div>
+
+                <div>
+
+                    <span>
+                        UZ SPORTS MEDIA
+                    </span>
+
+                    <h2>
+                        No gallery images yet
+                    </h2>
+
+                    <p>
+                        Sports photographs and highlights will
+                        appear here when images are added through
+                        the administration system.
+                    </p>
+
+                </div>
+
+            </section>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             EXCELLENCE PANEL
+        ================================================== -->
+
+        <section class="gallery-excellence">
+
+            <div class="gallery-excellence-mark">
+                UZ
+            </div>
+
+            <div class="gallery-excellence-copy">
+
+                <span>
+                    UNIVERSITY OF ZIMBABWE
+                </span>
+
+                <h2>
+                    Knowledge Through Sport
+                </h2>
+
+                <p>
+                    Capturing the passion, discipline and
+                    excellence of University of Zimbabwe athletes.
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'teams' %}"
+                class="gallery-excellence-button"
+            >
+                EXPLORE OUR TEAMS
+                <span>→</span>
+            </a>
+
+        </section>
+
+    </div>
+
+</section>
+
+{% endblock %}

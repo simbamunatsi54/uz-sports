@@ -1,0 +1,303 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    {{ player.first_name }} {{ player.last_name }} | UZ Sports
+{% endblock %}
+
+{% block content %}
+
+<main class="player-detail-page">
+
+    <section class="player-detail-hero">
+
+        <div class="player-detail-hero-inner">
+
+            <a
+                href="{% url 'team_detail' player.team.id %}"
+                class="player-detail-back"
+            >
+                ← BACK TO {{ player.team.name|upper }}
+            </a>
+
+            <div class="player-detail-profile">
+
+                <div class="player-detail-photo">
+
+                    {% if player.photo %}
+
+                        <img
+                            src="{{ player.photo.url }}"
+                            alt="{{ player.first_name }} {{ player.last_name }}"
+                        >
+
+                    {% else %}
+
+                        <div class="player-detail-photo-fallback">
+                            {{ player.first_name|first|upper }}{{ player.last_name|first|upper }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="player-detail-information">
+
+                    <span class="player-detail-eyebrow">
+                        UNIVERSITY OF ZIMBABWE
+                    </span>
+
+                    <span class="player-detail-sport">
+                        {{ player.team.sport.name|upper }}
+                    </span>
+
+                    <h1>
+                        {{ player.first_name }}
+                        <strong>{{ player.last_name }}</strong>
+                    </h1>
+
+                    {% if player.position %}
+
+                        <div class="player-detail-position">
+                            {{ player.position|upper }}
+                        </div>
+
+                    {% endif %}
+
+                    <p>
+                        Representing
+                        <strong>{{ player.team.name }}</strong>
+                        in {{ player.team.sport.name }}.
+                    </p>
+
+                </div>
+
+
+                <div class="player-detail-number">
+
+                    {% if player.jersey_number %}
+                        <span>#</span>{{ player.jersey_number }}
+                    {% else %}
+                        <span>UZ</span>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <div class="player-detail-content">
+
+        <section class="player-detail-overview">
+
+            <div class="player-overview-heading">
+
+                <span>PLAYER PROFILE</span>
+
+                <h2>
+                    ATHLETE
+                    <strong>DETAILS.</strong>
+                </h2>
+
+            </div>
+
+
+            <div class="player-overview-grid">
+
+                <div class="player-overview-item">
+
+                    <span>TEAM</span>
+
+                    <strong>
+                        {{ player.team.name }}
+                    </strong>
+
+                </div>
+
+
+                <div class="player-overview-item">
+
+                    <span>SPORT</span>
+
+                    <strong>
+                        {{ player.team.sport.name }}
+                    </strong>
+
+                </div>
+
+
+                <div class="player-overview-item">
+
+                    <span>POSITION</span>
+
+                    <strong>
+                        {% if player.position %}
+                            {{ player.position }}
+                        {% else %}
+                            Not specified
+                        {% endif %}
+                    </strong>
+
+                </div>
+
+
+                <div class="player-overview-item">
+
+                    <span>JERSEY NUMBER</span>
+
+                    <strong>
+                        {% if player.jersey_number %}
+                            #{{ player.jersey_number }}
+                        {% else %}
+                            Not assigned
+                        {% endif %}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+<section class="player-statistics-section">
+
+    <div class="player-statistics-heading">
+
+        <div>
+            <span>PERFORMANCE DATA</span>
+
+            <h2>
+                PLAYER
+                <strong>STATISTICS.</strong>
+            </h2>
+        </div>
+
+        <div class="player-statistics-number">
+            01
+        </div>
+
+    </div>
+
+
+    {% if statistics %}
+
+        <div class="player-statistics-list">
+
+            {% for stat in statistics %}
+
+                <div class="player-stat-row">
+
+                    <div class="player-stat-name">
+                        <span>{{ stat.statistic|upper }}</span>
+
+                        {% if stat.competition %}
+                            <small>{{ stat.competition }}</small>
+                        {% endif %}
+                    </div>
+
+                    <div class="player-stat-value">
+
+                        <strong>
+                            {{ stat.value|floatformat:"-2" }}
+                        </strong>
+
+                        {% if stat.unit %}
+                            <span>{{ stat.unit }}</span>
+                        {% endif %}
+
+                    </div>
+
+                    {% if stat.season %}
+                        <div class="player-stat-season">
+                            {{ stat.season }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="player-statistics-empty">
+
+            <div class="player-statistics-empty-number">
+                00
+            </div>
+
+            <div>
+
+                <span>PERFORMANCE DATA</span>
+
+                <h3>
+                    No statistics available
+                </h3>
+
+                <p>
+                    Player performance statistics will appear here
+                    when competition data is added through the
+                    administration system.
+                </p>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+
+        <section class="player-detail-statement">
+
+            <div class="player-statement-mark">
+                UZ
+            </div>
+
+            <div class="player-statement-copy">
+
+                <span>
+                    UNIVERSITY OF ZIMBABWE SPORTS
+                </span>
+
+                <h2>
+                    Knowledge Through Sport.
+                </h2>
+
+                <p>
+                    Discipline, teamwork, leadership and excellence
+                    define the student-athletes representing UZ.
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'team_detail' player.team.id %}"
+                class="player-statement-button"
+            >
+                VIEW TEAM
+                <span>→</span>
+            </a>
+
+        </section>
+
+
+        <div class="player-detail-bottom">
+
+            <a href="{% url 'teams' %}">
+                ← ALL UZ TEAMS
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+{% endblock %}

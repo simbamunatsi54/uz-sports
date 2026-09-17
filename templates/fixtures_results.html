@@ -1,0 +1,496 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Fixtures & Results | UZ Sports{% endblock %}
+
+{% block content %}
+
+<main class="match-centre-page">
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+    <section class="match-centre-hero">
+
+        <div class="match-centre-hero-inner">
+
+            <div class="match-centre-hero-copy">
+                <span class="match-centre-eyebrow">
+                    UNIVERSITY OF ZIMBABWE SPORTS
+                </span>
+
+                <h1>
+                    MATCH
+                    <strong>CENTRE.</strong>
+                </h1>
+
+                <p>
+                    Follow upcoming fixtures and completed results
+                    across University of Zimbabwe sport.
+                </p>
+            </div>
+
+            <div class="match-centre-hero-mark">
+                <span>UZ</span>
+                <strong>SPORTS</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+    <div class="match-centre-content">
+
+        <!-- =================================================
+             PAGE HEADER
+        ================================================== -->
+        <section class="match-centre-heading">
+
+            <div>
+                <span>COMPETITION SCHEDULE</span>
+
+                <h2>
+                    FIXTURES <strong>&amp; RESULTS.</strong>
+                </h2>
+            </div>
+
+            <p>
+                Match information published by UZ Sports,
+                including venues, kick-off times and final scores.
+            </p>
+
+        </section>
+
+
+        <!-- =================================================
+             SPORT FILTER
+        ================================================== -->
+        <nav class="match-centre-filter" aria-label="Filter matches by sport">
+
+            <span class="match-filter-label">
+                SPORT
+            </span>
+
+            <a
+                href="{% url 'fixtures_results' %}"
+                class="match-filter-button {% if not selected_sport %}active{% endif %}"
+            >
+                ALL SPORTS
+            </a>
+
+            {% for sport in sports %}
+
+                <a
+                    href="?sport={{ sport.id }}"
+                    class="match-filter-button {% if selected_sport == sport.id|stringformat:'s' %}active{% endif %}"
+                >
+                    {{ sport.name|upper }}
+                </a>
+
+            {% endfor %}
+
+        </nav>
+
+
+        <!-- =================================================
+             UPCOMING FIXTURES
+        ================================================== -->
+        <section class="match-centre-section">
+
+            <div class="match-centre-section-heading">
+
+                <div>
+                    <span>UPCOMING</span>
+                    <h2>NEXT <strong>FIXTURES.</strong></h2>
+                </div>
+
+                <div class="match-centre-section-number">
+                    01
+                </div>
+
+            </div>
+
+
+            {% if fixtures %}
+
+                <div class="fixture-list">
+
+                    {% for fixture in fixtures %}
+
+                        <article class="fixture-row">
+
+                            <!-- DATE -->
+                            <div class="fixture-date">
+
+                                <span>
+                                    {{ fixture.date|date:"M" }}
+                                </span>
+
+                                <strong>
+                                    {{ fixture.date|date:"d" }}
+                                </strong>
+
+                                <small>
+                                    {{ fixture.date|date:"Y" }}
+                                </small>
+
+                            </div>
+
+
+                            <!-- MATCH -->
+                            <div class="fixture-match">
+
+                                <div class="fixture-sport">
+                                    {{ fixture.sport.name|upper }}
+                                </div>
+
+                                <div class="fixture-teams">
+
+                                    <div class="fixture-team fixture-home">
+
+                                        <strong>
+                                            {{ fixture.home_team.name }}
+                                        </strong>
+
+                                        {% if fixture.home_team.logo %}
+                                            <img
+                                                src="{{ fixture.home_team.logo.url }}"
+                                                alt="{{ fixture.home_team.name }}"
+                                            >
+                                        {% else %}
+                                            <span class="fixture-team-mark">
+                                                {{ fixture.home_team.name|first|upper }}
+                                            </span>
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    <div class="fixture-versus">
+                                        <span>VS</span>
+                                    </div>
+
+
+                                    <div class="fixture-team fixture-away">
+
+                                        {% if fixture.away_team.logo %}
+                                            <img
+                                                src="{{ fixture.away_team.logo.url }}"
+                                                alt="{{ fixture.away_team.name }}"
+                                            >
+                                        {% else %}
+                                            <span class="fixture-team-mark">
+                                                {{ fixture.away_team.name|first|upper }}
+                                            </span>
+                                        {% endif %}
+
+                                        <strong>
+                                            {{ fixture.away_team.name }}
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- MATCH INFORMATION -->
+                            <div class="fixture-information">
+
+                                <div class="fixture-time">
+                                    {{ fixture.time|time:"H:i" }}
+                                </div>
+
+                                {% if fixture.venue %}
+
+                                    <div class="fixture-venue">
+                                        {{ fixture.venue.name }}
+                                    </div>
+
+                                    {% if fixture.venue.location %}
+                                        <div class="fixture-location">
+                                            {{ fixture.venue.location }}
+                                        </div>
+                                    {% endif %}
+
+                                {% else %}
+
+                                    <div class="fixture-venue">
+                                        Venue TBC
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <!-- STATUS -->
+                            <div class="fixture-status">
+                                <span>
+                                    {% if fixture.status == "live" %}
+                                        LIVE
+                                    {% elif fixture.status == "postponed" %}
+                                        POSTPONED
+                                    {% else %}
+                                        UPCOMING
+                                    {% endif %}
+                                </span>
+                            </div>
+
+                        </article>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="match-centre-empty">
+
+                    <div class="match-empty-number">
+                        00
+                    </div>
+
+                    <div>
+                        <span>UPCOMING COMPETITION</span>
+
+                        <h3>
+                            No fixtures scheduled
+                        </h3>
+
+                        <p>
+                            Upcoming matches will appear here when
+                            fixtures are added through the UZ Sports
+                            administration system.
+                        </p>
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- =================================================
+             RESULTS
+        ================================================== -->
+        <section class="match-centre-section results-section">
+
+            <div class="match-centre-section-heading">
+
+                <div>
+                    <span>COMPLETED MATCHES</span>
+                    <h2>LATEST <strong>RESULTS.</strong></h2>
+                </div>
+
+                <div class="match-centre-section-number">
+                    02
+                </div>
+
+            </div>
+
+
+            {% if results %}
+
+                <div class="result-list">
+
+                    {% for result in results %}
+
+                        <article class="result-row">
+
+                            <!-- DATE -->
+                            <div class="result-date">
+
+                                <span>
+                                    {{ result.fixture.date|date:"M" }}
+                                </span>
+
+                                <strong>
+                                    {{ result.fixture.date|date:"d" }}
+                                </strong>
+
+                            </div>
+
+
+                            <!-- MATCH -->
+                            <div class="result-match">
+
+                                <div class="result-sport">
+                                    {{ result.fixture.sport.name|upper }}
+                                </div>
+
+                                <div class="result-teams">
+
+                                    <div class="result-team">
+
+                                        {% if result.fixture.home_team.logo %}
+
+                                            <img
+                                                src="{{ result.fixture.home_team.logo.url }}"
+                                                alt="{{ result.fixture.home_team.name }}"
+                                            >
+
+                                        {% else %}
+
+                                            <span class="result-team-mark">
+                                                {{ result.fixture.home_team.name|first|upper }}
+                                            </span>
+
+                                        {% endif %}
+
+                                        <strong>
+                                            {{ result.fixture.home_team.name }}
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div class="result-score">
+
+                                        <strong>
+                                            {{ result.home_score }}
+                                        </strong>
+
+                                        <span>—</span>
+
+                                        <strong>
+                                            {{ result.away_score }}
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div class="result-team">
+
+                                        <strong>
+                                            {{ result.fixture.away_team.name }}
+                                        </strong>
+
+                                        {% if result.fixture.away_team.logo %}
+
+                                            <img
+                                                src="{{ result.fixture.away_team.logo.url }}"
+                                                alt="{{ result.fixture.away_team.name }}"
+                                            >
+
+                                        {% else %}
+
+                                            <span class="result-team-mark">
+                                                {{ result.fixture.away_team.name|first|upper }}
+                                            </span>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- RESULT INFO -->
+                            <div class="result-information">
+
+                                {% if result.fixture.venue %}
+
+                                    <span>
+                                        {{ result.fixture.venue.name }}
+                                    </span>
+
+                                {% endif %}
+
+                                <small>
+                                    {{ result.fixture.date|date:"d F Y" }}
+                                </small>
+
+                            </div>
+
+
+                            <!-- FINAL -->
+                            <div class="result-status">
+                                FINAL
+                            </div>
+
+                        </article>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="match-centre-empty">
+
+                    <div class="match-empty-number">
+                        00
+                    </div>
+
+                    <div>
+                        <span>MATCH RESULTS</span>
+
+                        <h3>
+                            No results available
+                        </h3>
+
+                        <p>
+                            Completed match results will appear here
+                            once they have been entered through the
+                            administration system.
+                        </p>
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- =================================================
+             INFORMATION STRIP
+        ================================================== -->
+        <section class="match-centre-statement">
+
+            <div class="match-statement-mark">
+                UZ
+            </div>
+
+            <div class="match-statement-copy">
+
+                <span>
+                    UNIVERSITY OF ZIMBABWE SPORTS
+                </span>
+
+                <h2>
+                    Compete. Represent. Excel.
+                </h2>
+
+                <p>
+                    Follow University of Zimbabwe teams throughout
+                    the sporting season.
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'teams' %}"
+                class="match-statement-button"
+            >
+                EXPLORE OUR TEAMS
+                <span>→</span>
+            </a>
+
+        </section>
+
+
+    </div>
+
+</main>
+
+{% endblock %}
